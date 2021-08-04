@@ -84,14 +84,15 @@ struct ParkingLot {
             id = 3
             let carStart = motorcycleSpot
             let carEnd = motorcycleSpot + carSpot - 1
+            let vanStart = carEnd + 1
             var totalCarSpotsTaken = 0
             for i in carStart...carEnd {
                 if parkingSpaces[i] == id {
                     totalCarSpotsTaken += 1
                 }
             }
-            count += totalCarSpotsTaken / 3
-            for i in carEnd...parkingSpaces.count {
+            count += (totalCarSpotsTaken / 3)
+            for i in vanStart...parkingSpaces.count - 1{
                 if parkingSpaces[i] == id {
                     count += 1
                 }
@@ -126,12 +127,12 @@ struct ParkingLot {
         case .van:
             let carStart = motorcycleSpot
             let carEnd = carStart + carSpot - 1
-            let vanStart = motorcycleSpot + carSpot - 1
+            let vanStart = motorcycleSpot + carSpot
             for i in carStart...carEnd {
                 if spots == 0 {
                     break
                 }
-                if (parkingSpaces[i] == 0) && (parkingSpaces[i+1] == 0) && (parkingSpaces[i+2] == 0) && (parkingSpaces[i+2] < parkingSpaces[vanStart]) {
+                if (parkingSpaces[i] == 0) && (parkingSpaces[i+1] == 0) && (parkingSpaces[i+2] == 0) && (parkingSpaces[i+2] <= parkingSpaces[vanStart]) {
                     parkingSpaces[i] = 3
                     parkingSpaces[i+1] = 3
                     parkingSpaces[i+2] = 3
@@ -162,8 +163,8 @@ struct ParkingLot {
     
     //DECLARE AND TEST
 var parkingLot = ParkingLot(motorcycleSpot: 5, carSpot: 5, vanSpot: 5)
-let motorcycles = 4
-let cars = 0
+let motorcycles = 5
+let cars = 2
 let vans = 5
 parkingLot.fillSpot(for: .motorcycle, with: motorcycles)
 parkingLot.fillSpot(for: .car, with: cars)
@@ -171,6 +172,6 @@ parkingLot.fillSpot(for: .van, with: vans)
 print(parkingLot.parkingSpaces)
 
 print(parkingLot.getEmptySpaces(start: 0, end: parkingLot.parkingSpaces.count-1))
-print(parkingLot.isSpecificEmpty(vehicle: .motorcycle))
+print(parkingLot.isSpecificEmpty(vehicle: .van))
 print(parkingLot.getTotalSpots())
-print(parkingLot.getSpecificSpots(vehicle: .motorcycle))
+print(parkingLot.getSpecificSpots(vehicle: .van))
